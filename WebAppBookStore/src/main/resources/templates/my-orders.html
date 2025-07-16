@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои заказы</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #2C3E50;
+        }
+
+        header {
+            background: linear-gradient(70deg, #2C3E50, #4CA1AF);
+            text-align: center;
+            display: flex;
+            height: 70px;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .header-title {
+            color: white;
+            flex: 1;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            padding: 100px 40px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        h1 {
+            color: #2C3E50;
+            margin-bottom: 30px;
+            font-weight: 600;
+            text-align: center;
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ECF0F1;
+        }
+
+        th {
+            background-color: #2C3E50;
+            color: white;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        td ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        td ul li {
+            margin-bottom: 10px;
+        }
+
+        td ul li .book-item {
+            display: flex;
+            align-items: center;
+            background-color: #f8f9fa;
+            border: 1px solid #ECF0F1;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 8px 0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        td ul li .book-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        td ul li .book-item img {
+            width: 50px;
+            height: 70px;
+            margin-right: 15px;
+            border: 1px solid #BDC3C7;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        td ul li .book-item .book-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        td ul li .book-item .book-info .book-title {
+            font-weight: 600;
+            color: #2C3E50;
+        }
+
+        td ul li .book-item .book-info .book-quantity {
+            color: #7F8C8D;
+            font-size: 0.9em;
+        }
+
+        td ul li .book-item .book-info .book-price {
+            color: #2C3E50;
+            font-weight: 600;
+        }
+
+        .back-button {
+            margin: 30px auto;
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #4CA1AF;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button:hover {
+            background-color: #3D8B99;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .order-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+            display: inline-block;
+            font-size: 0.9em;
+        }
+
+        .status-Оформлен {
+            background-color: rgba(76, 161, 175, 0.1);
+            color: #4CA1AF;
+        }
+
+        .status-Впути {
+            background-color: rgba(241, 158, 76, 0.1);
+            color: #F19E4C;
+        }
+
+        .status-Доставлен {
+            background-color: rgba(107, 203, 67, 0.1);
+            color: #6BCB43;
+        }
+
+            /* Стили для навигационного меню */
+    #nav-container {
+        position: fixed;
+        height: 100vh;
+        width: 100%;
+        pointer-events: none;
+        z-index: 9999;
+    }
+    #nav-container .bg {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        height: calc(100% - 70px);
+        visibility: hidden;
+        opacity: 0;
+        transition: .3s;
+        background: rgba(0,0,0,0.5);
+    }
+    #nav-container:focus-within .bg {
+        visibility: visible;
+        opacity: 1;
+    }
+    #nav-container * {
+        visibility: visible;
+    }
+    .button {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        z-index: 1;
+        -webkit-appearance: none;
+        border: 0;
+        background: transparent;
+        border-radius: 0;
+        height: 70px;
+        width: 30px;
+        cursor: pointer;
+        pointer-events: auto;
+        margin-left: 25px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+    .icon-bar {
+        display: block;
+        width: 100%;
+        height: 3px;
+        background: #333333;
+        transition: .3s;
+    }
+    .icon-bar + .icon-bar {
+        margin-top: 5px;
+    }
+    #nav-container:focus-within .button {
+        pointer-events: none;
+    }
+    #nav-container:focus-within .icon-bar:nth-of-type(1) {
+        transform: translate3d(0,8px,0) rotate(45deg);
+        background: #ffa812;
+    }
+    #nav-container:focus-within .icon-bar:nth-of-type(2) {
+        opacity: 0;
+    }
+    #nav-container:focus-within .icon-bar:nth-of-type(3) {
+        transform: translate3d(0,-8px,0) rotate(-45deg);
+        background: #ffa812;
+    }
+    #nav-content {
+        margin-top: 70px;
+        padding: 20px;
+        width: 90%;
+        max-width: 300px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: calc(100% - 70px);
+        background: #ffffff;
+        pointer-events: auto;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        transform: translateX(-100%);
+        transition: transform .3s;
+        will-change: transform;
+        contain: paint;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+    #nav-content ul {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    #nav-content li a {
+        padding: 10px 5px;
+        display: block;
+        text-transform: uppercase;
+        transition: color .1s;
+        color: #333333;
+        font-weight: 500;
+    }
+    #nav-content li a:hover {
+        color: #ffa812;
+    }
+    #nav-content li span {
+        padding: 10px 5px;
+        display: block;
+        text-transform: uppercase;
+        transition: color .1s;
+        color: #333333;
+        font-weight: bold;
+    }
+    #nav-content li span:hover {
+        color: #ffa812;
+    }
+    #nav-container:focus-within #nav-content {
+        transform: none;
+    }
+    .logout-btn {
+        background-color: transparent;
+        border: 0;
+        padding: 10px 5px;
+        display: block;
+        text-transform: uppercase;
+        transition: color .1s;
+        color: #333333;
+        text-align: left;
+        width: 100%;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: inherit;
+    }
+    .logout-btn:hover {
+        color: #ffa812;
+    }
+                    a,
+        a:visited,
+        a:focus,
+        a:active,
+        a:link {
+            text-decoration: none;
+            outline: 0;
+        }
+        a {
+            color: currentColor;
+            transition: .2s ease-in-out;
+        }
+        span {
+            color: currentColor;
+            transition: .2s ease-in-out;
+        }
+        ul {
+            padding: 0;
+            list-style: none;
+        }
+        .date-time {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .date-time span {
+            font-size: 0.8em;
+            color: #7F8C8D;
+            margin-bottom: 2px;
+        }
+
+        .date-time p {
+            margin: 0;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1 class="header-title">Мои заказы</h1>
+</header>
+
+<div id="nav-container">
+    <div class="bg"></div>
+    <div class="button" tabindex="0">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </div>
+    <div id="nav-content" tabindex="0">
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <ul>
+                <li><a href="/">Главная</a></li>
+                <li><a href="/add-book">Добавить</a></li>
+                <li><a href="/bookDetails">Редактировать</a></li>
+                <li><a href="/users">Заказы</a></li>
+                <li>
+                    <form th:action="@{/logout}" th:method="POST">
+                        <button class="logout-btn" type="submit">Выход</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+        <div sec:authorize="hasRole('ROLE_USER')">
+            <ul>
+                <li><span style="font-weight:bold; padding:12px 8px;" sec:authentication="name"></span></li>
+                <li><a href="/">Главная</a></li>
+                <li><a href="/cart">Корзина</a></li>
+                <li><a href="/my-orders">Заказы</a></li>
+                <li>
+                    <form th:action="@{/logout}" th:method="POST">
+                        <button class="logout-btn" type="submit">Выход</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <table>
+        <thead>
+        <tr>
+            <th>Дата заказа</th>
+            <th>Общая стоимость</th>
+            <th>Детали заказа</th>
+            <th>Статус</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td>
+                <div class="date-time">
+                    <span>Дата</span>
+                    <p th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy')}"></p>
+                    <span>Время</span>
+                    <p th:text="${#temporals.format(order.orderDate, 'HH:mm:ss')}"></p>
+                </div>
+            </td>
+            <td th:text="${order.totalOrderPrice + ' ₽'}"></td>
+            <td>
+                <ul>
+                    <li th:each="item : ${order.orderItems}">
+                        <div class="book-item">
+                            <img th:src="${item.book.url}" alt="Обложка книги">
+                            <div class="book-info">
+                                <div class="book-title" th:text="${item.book.name}"></div>
+                                <div class="book-quantity" th:text="'Количество: ' + ${item.quantity}"></div>
+                                <div class="book-price" th:text="'Стоимость: ' + ${item.totalPrice} + ' ₽'"></div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <div th:class="'order-status status-' + ${order.status}" th:text="${order.status}"></div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="/" class="back-button">Вернуться к каталогу</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${book.name}">Book Details</title>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #2C3E50;
+        }
+
+        header {
+            background: linear-gradient(70deg, #2C3E50, #4CA1AF);
+            text-align: center;
+            display: flex;
+            height: 80px;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .add-book-button {
+            background-color: #4CA1AF;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .add-book-button:hover {
+            background-color: #3D8B99;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .container {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .book-header {
+            text-align: center;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        .book-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #2C3E50;
+            margin-bottom: 10px;
+        }
+
+        .book-author {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #4CA1AF;
+            margin-bottom: 20px;
+        }
+
+        .book-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .book-item {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 400px;
+            transition: transform 0.3s ease;
+        }
+
+        .book-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .book-item img {
+            width: 100%;
+            max-height: 450px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-price {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2C3E50;
+            margin: 15px 0;
+        }
+
+        .button {
+            background-color: #4CA1AF;
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1rem;
+            font-weight: 500;
+            margin: 15px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .button:hover {
+            background-color: #3D8B99;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .button.go-to-cart {
+            background-color: #2ECC71;
+        }
+
+        .button.go-to-cart:hover {
+            background-color: #27ae60;
+        }
+
+        .book-info-container {
+            flex: 1;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        .book-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ECF0F1;
+        }
+
+        .book-detail:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .label {
+            font-weight: 600;
+            color: #2C3E50;
+            flex: 1;
+        }
+
+        .value {
+            flex: 1;
+            text-align: right;
+            color: #7F8C8D;
+        }
+
+        .annotation {
+            margin-top: 30px;
+            line-height: 1.6;
+            color: #2C3E50;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .book-content {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .book-item, .book-info-container {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .book-title {
+                font-size: 1.8rem;
+            }
+
+            .book-author {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+    <script>
+        function addToCart(personId, bookId, csrfToken) {
+            fetch(`/add-order/${personId}/${bookId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.text();
+            })
+            .then(data => {
+                if (data === "Item added to cart") {
+                    let button = document.getElementById('cartButton');
+                    button.innerText = "Перейти в корзину";
+                    button.setAttribute('onclick', "window.location.href='/cart'");
+                    button.classList.add('go-to-cart');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+            const cartButton = document.getElementById('cartButton');
+            if (cartButton) {
+                cartButton.addEventListener('click', function() {
+                    const personId = this.getAttribute('data-person-id');
+                    const bookId = this.getAttribute('data-book-id');
+                    addToCart(personId, bookId, csrfToken);
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+
+<header>
+    <a href="/" class="add-book-button">← Вернуться к каталогу</a>
+</header>
+
+<div class="container">
+    <div class="book-header">
+        <h1 class="book-title" th:text="${book.name}">Название</h1>
+        <div class="book-author" th:text="${book.author}">Автор</div>
+    </div>
+
+    <div class="book-content">
+        <div class="book-item">
+            <img th:src="${book.url}" alt="Обложка книги">
+            <div class="book-price" th:text="${book.price + ' ₽'}">Цена</div>
+
+            <div sec:authorize="hasRole('ROLE_USER')">
+                <button id="cartButton"
+                        class="button"
+                        th:data-person-id="${person_id}"
+                        th:data-book-id="${book.getId()}">
+                    Добавить в корзину
+                </button>
+            </div>
+            <div sec:authorize="isAnonymous()">
+                <a th:href="@{/login(referer=${referer})}" class="button">Войти, чтобы добавить в корзину</a>
+            </div>
+        </div>
+
+        <div class="book-info-container">
+            <div class="book-detail">
+                <span class="label">Язык:</span>
+                <span class="value" th:text="${book.language}">Language</span>
+            </div>
+            <div class="book-detail">
+                <span class="label">Издательство:</span>
+                <span class="value" th:text="${book.publisher}">Publisher</span>
+            </div>
+            <div class="book-detail">
+                <span class="label">Год издания:</span>
+                <span class="value" th:text="${book.year}">Year</span>
+            </div>
+            <div class="book-detail">
+                <span class="label">Жанр:</span>
+                <span class="value" th:text="${book.genre}">Genre</span>
+            </div>
+            <div class="book-detail">
+                <span class="label">ISBN:</span>
+                <span class="value" th:text="${book.ISBN}">ISBN</span>
+            </div>
+            <div class="book-detail">
+                <span class="label">Количество страниц:</span>
+                <span class="value" th:text="${book.pageCount}">Page Count</span>
+            </div>
+
+            <div class="annotation">
+                <h3 style="color: #2C3E50; margin-bottom: 15px;">Аннотация</h3>
+                <p th:text="${book.annotation}">Annotation</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

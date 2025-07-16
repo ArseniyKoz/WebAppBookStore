@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог книг</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #2C3E50;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: linear-gradient(70deg, #2C3E50, #4CA1AF);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .container {
+            padding: 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .book-item {
+            background-color: white;
+            border: 1px solid #ECF0F1;
+            border-radius: 10px;
+            margin: 15px 0;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .book-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .book-cover {
+            width: 100px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-right: 25px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-info {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2C3E50;
+        }
+
+        .book-author {
+            font-size: 1rem;
+            color: #4CA1AF;
+            font-weight: 500;
+        }
+
+        .book-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-width: 150px;
+        }
+
+        .action-button {
+            background-color: #4CA1AF;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-button:hover {
+            background-color: #3D8B99;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .action-button.delete {
+            background-color: #E74C3C;
+        }
+
+        .action-button.delete:hover {
+            background-color: #C0392B;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .add-book-button {
+            background-color: white;
+            color: #2C3E50;
+            border: 2px solid white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-book-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .logout-button {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        footer {
+            background-color: #2C3E50;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .header-actions {
+                width: 100%;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .add-book-button,
+            .logout-button {
+                width: 100%;
+            }
+
+            .book-item {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .book-cover {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+
+            .book-actions {
+                flex-direction: row;
+                justify-content: center;
+                width: 100%;
+                margin-top: 20px;
+                flex-wrap: wrap;
+            }
+
+            .action-button {
+                width: 140px;
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1 class="header-title">Каталог книг</h1>
+    <div class="header-actions">
+        <form th:action="@{/logout}" th:method="POST">
+            <input type="submit" class="logout-button" value="Выйти"/>
+        </form>
+        <a href="/add-book" class="add-book-button">Добавить книгу</a>
+    </div>
+</header>
+
+<div class="container">
+    <th:block th:each="book : ${bookList}">
+        <div class="book-item">
+            <img th:src="${book.url}" alt="Обложка книги" class="book-cover">
+            <div class="book-info">
+                <div class="book-title" th:text="${book.name}">Название книги</div>
+                <div class="book-author" th:text="${book.author}">Автор книги</div>
+            </div>
+            <div class="book-actions">
+                <a th:href="@{/{id}/edit(id=${book.getId()})}" class="action-button">Редактировать</a>
+                <form th:method="DELETE" th:action="@{/{id}(id=${book.getId()})}">
+                    <input class="action-button delete" type="submit" value="Удалить"/>
+                </form>
+            </div>
+        </div>
+    </th:block>
+</div>
+
+<footer>
+    <p>&copy; 2025 Книжный магазин. Все права защищены.</p>
+</footer>
+</body>
+</html>

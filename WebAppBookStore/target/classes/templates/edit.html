@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование книги</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary-dark: #2C3E50;
+            --primary-light: #4CA1AF;
+            --bg-light: #f5f7fa;
+            --text-dark: #2C3E50;
+            --error-color: #E74C3C;
+            --success-color: #2ECC71;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(70deg, var(--primary-dark), var(--primary-light));
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 25px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            max-height: calc(100vh - 160px);
+            overflow-y: auto;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-input, select {
+            padding: 10px 12px;
+            background-color: #ECF0F1;
+            border: 1px solid #BDC3C7;
+            border-radius: var(--border-radius);
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .form-input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 2px rgba(76, 161, 175, 0.2);
+        }
+
+        .form-error {
+            margin-top: 4px;
+            font-size: 0.8rem;
+            color: var(--error-color);
+            min-height: 18px;
+        }
+
+        .error {
+            border-color: var(--error-color) !important;
+        }
+
+        .actions {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .catalog-button {
+            padding: 10px 20px;
+            background-color: var(--primary-light);
+            border: none;
+            border-radius: var(--border-radius);
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .catalog-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .success-message {
+            grid-column: 1 / -1;
+            background-color: var(--success-color);
+            color: white;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                max-height: none;
+            }
+
+            form {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .catalog-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1 class="header-title">Редактирование книги</h1>
+</header>
+
+<div class="container">
+    <div th:if="${postCorrect == true}" class="success-message">
+        Книга успешно обновлена
+    </div>
+
+    <form th:method="PATCH" th:action="@{/{id}/edit(id=${book.getId()})}" th:object="${book}">
+        <div class="form-group">
+            <label class="form-label" for="url">Фото URL</label>
+            <input class="form-input" type="text" th:field="*{url}" id="url"/>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="name">Название</label>
+            <input class="form-input" type="text" th:field="*{name}" id="name" th:classappend="${#fields.hasErrors('name')} ? 'error' : ''"/>
+            <div class="form-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="author">Автор</label>
+            <input class="form-input" type="text" th:field="*{author}" id="author" th:classappend="${#fields.hasErrors('author')} ? 'error' : ''"/>
+            <div class="form-error" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="language">Язык</label>
+            <input class="form-input" type="text" th:field="*{language}" id="language" th:classappend="${#fields.hasErrors('language')} ? 'error' : ''"/>
+            <div class="form-error" th:if="${#fields.hasErrors('language')}" th:errors="*{language}"></div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="publisher">Издательство</label>
+            <input class="form-input" type="text" th:field="*{publisher}" id="publisher" th:classappend="${#fields.hasErrors('publisher')} ? 'error' : ''"/>
+            <div class="form-error" th:if="${#fields.hasErrors('publisher')}" th:errors="*{publisher}"></div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="year">Год</label>
+            <input class="form-input" type="text" th:field="*{year}" id="year" th:classappend="${#fields.hasErrors('year')} ? 'error' : ''"/>
+            <div class="form-error" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="genre">Жанр</label>
+            <input class="form-input" type="text" th:field="*{genre}" id="genre" th:classappend="${#fields.hasErrors('genre')} ? 'error' : ''"/>
+            <div class="form-error" th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}"></div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="ISBN">ISBN</label>
+            <input class="form-input" type="text" th:field="*{ISBN}" id="ISBN" th:classappend="${#fields.hasErrors('ISBN')} ? 'error' : ''"/>
+            <div class="form-error" th:if="${#fields.hasErrors('ISBN')}" th:errors="*{ISBN}"></div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="price">Цена</label>
+            <input class="form-input" type="text" th:field="*{price}" id="price" th:classappend="${#fields.hasErrors('price')} ? 'error' : ''"/>
+            <div class="form-error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="pageCount">Страницы</label>
+            <input class="form-input" type="text" th:field="*{pageCount}" id="pageCount" th:classappend="${#fields.hasErrors('pageCount')} ? 'error' : ''"/>
+            <div class="form-error" th:if="${#fields.hasErrors('pageCount')}" th:errors="*{pageCount}"></div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="annotation">Аннотация</label>
+            <input class="form-input" type="text" th:field="*{annotation}" id="annotation"/>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="rating">Рейтинг</label>
+            <input class="form-input" type="text" th:field="*{rating}" id="rating"/>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="novelty">Новинка</label>
+            <select class="form-input" th:field="*{novelty}" id="novelty">
+                <option th:value="true">Да</option>
+                <option th:value="false">Нет</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="quantity">Наличие</label>
+            <input class="form-input" type="text" th:field="*{quantity}" id="quantity" th:classappend="${#fields.hasErrors('quantity')} ? 'error' : ''"/>
+            <div class="form-error" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></div>
+        </div>
+        <div class="actions">
+            <a href="/bookDetails" class="catalog-button">← К каталогу</a>
+            <button type="submit" class="catalog-button">Сохранить изменения</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>
