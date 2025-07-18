@@ -38,9 +38,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/add-book", "/*/edit").hasRole("ADMIN")
+                        .requestMatchers("/add-book", "/*/edit", "/users").hasRole("EMPLOYEE")
+                        .requestMatchers("/listOfUsers").hasRole("ADMIN")
                         .requestMatchers(AUTH_WHITELIST).permitAll()
-                        .anyRequest().hasAnyRole("USER", "ADMIN")
+                        .anyRequest().hasAnyRole("USER", "ADMIN", "EMPLOYEE")
                 )
                 .formLogin(form -> form
                         .loginPage("/login") // страница для логина``

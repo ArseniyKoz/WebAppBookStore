@@ -410,16 +410,26 @@
             <span class="icon-bar"></span>
         </div>
         <div id="nav-content" tabindex="0">
+            <div sec:authorize="hasRole('ROLE_EMPLOYEE')">
+                <ul>
+                    <li><a href="/">Главная</a></li>
+                    <li><a href="/add-book">Добавить</a></li>
+                    <li><a href="/bookDetails">Редактировать</a></li>
+                    <li><a href="/users">Заказы</a></li>
+                    <li>
+                        <form th:action="@{/logout}" th:method="POST">
+                            <input style="background-color: transparent; border: 0; padding: 10px 5px; display: block; text-transform: uppercase; transition: color .1s; color: #333;" onmouseover="this.style.color='#7E56C8';" onmouseout="this.style.color='#333';" type="submit" value="Выход">
+                        </form>
+                    </li>
+                </ul>
+            </div>
             <div sec:authorize="hasRole('ROLE_ADMIN')">
                 <ul>
-                    <li><span sec:authentication="name"></span></li>
-                    <li> <a href="/">Главная</a></li>
-                    <li> <a href="/add-book">Добавить</a></li>
-                    <li>  <a href="/bookDetails">Редактировать</a></li>
-                    <li> <a href="/users">Заказы</a></li>
+                    <li><a href="/">Главная</a></li>
+                    <li><a href="/listOfUsers">Пользователи</a></li>
                     <li>
-                        <form th:action="@{/logout}" th:method="POST" >
-                            <button class="logout-btn" type="submit">Выход</button>
+                        <form th:action="@{/logout}" th:method="POST">
+                            <input style="background-color: transparent; border: 0; padding: 10px 5px; display: block; text-transform: uppercase; transition: color .1s; color: #333;" onmouseover="this.style.color='#7E56C8';" onmouseout="this.style.color='#333';" type="submit" value="Выход">
                         </form>
                     </li>
                 </ul>

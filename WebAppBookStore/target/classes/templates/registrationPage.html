@@ -244,6 +244,22 @@
         .error {
             border: 1px solid #E74C3C;
         }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4a9fa5;
+            color: white;
+            text-decoration: none;
+            border-radius: 32px;
+            transition: background-color 0.3s ease;
+            margin: 10px;
+            text-align: center;
+        }
+        .back-button:hover {
+            background-color: #3a7f85;
+        }
+
     </style>
 </head>
 
@@ -273,9 +289,9 @@
             <h1 style="color: #2C3E50;">Создать аккаунт</h1>
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <span style="margin-top:20px; color: #7F8C8D;">Зарегестрироваться с помощью логина</span>
-            <input class="form-input" type="text" th:field="*{username}" id="username" placeholder="Name" th:classappend="${#fields.hasErrors('username')} ? 'error' : 'form-input'"/>
+            <input class="form-input" type="text" th:field="*{username}" id="username" placeholder="Логин" th:classappend="${#fields.hasErrors('username')} ? 'error' : 'form-input'"/>
             <div class="form-error" th:if="${#fields.hasErrors('username')}" th:text="${#fields.errors('username').get(#fields.errors('username').size() - 1)}"></div>
-            <input class="form-input" type="password" th:field="*{password}" id="password" placeholder="Enter Password" th:classappend="${#fields.hasErrors('password')} ? 'error' : 'form-input'"/>
+            <input class="form-input" type="password" th:field="*{password}" id="password" placeholder="Пароль" th:classappend="${#fields.hasErrors('password')} ? 'error' : 'form-input'"/>
             <div class="form-error" th:if="${#fields.hasErrors('password')}" th:text="${#fields.errors('password').get(#fields.errors('password').size() - 1)}"></div>
             <button>зарегестрироваться</button>
         </form>
@@ -284,7 +300,7 @@
     <div class="toggle-container">
         <div class="toggle">
             <div class="toggle-panel toggle-left">
-                <h1>Добро пожаловать<br></h1>
+                <h1>Уже есть аккаунт?<br></h1>
                 <p>Войти с помощью логина и пароля</p>
                 <a href="/login">
                     <button class="hidden" id="login">войти</button></a>
@@ -306,6 +322,7 @@
         container.classList.remove("active");
     });
 </script>
+<a href="/" class="back-button">Вернуться в каталог</a>
 </body>
 
 </html>

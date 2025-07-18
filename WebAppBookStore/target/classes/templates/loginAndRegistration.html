@@ -243,6 +243,23 @@
             color: #ECF0F1;
             margin-bottom: 20px;
         }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4a9fa5;
+            color: white;
+            text-decoration: none;
+            border-radius: 32px;
+            transition: background-color 0.3s ease;
+            margin: 10px;
+            text-align: center;
+        }
+        .back-button:hover {
+            background-color: #3a7f85;
+        }
+
+
     </style>
 </head>
 
@@ -254,8 +271,8 @@
             <h1 style="color: #2C3E50;" >Войти</h1>
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <span style="margin-top:20px; color: #2C3E50;">Войти с помощью Логина и пароля</span>
-            <input type="text" id="username" name="username" placeholder="Enter Username" required>
-            <input type="password" id="password" name="password" placeholder="Enter Password" required>
+            <input type="text" id="username" name="username" placeholder="Логин" required>
+            <input type="password" id="password" name="password" placeholder="Пароль" required>
             <div>
                 <input type="hidden" name="referer" th:value="${param.referer}" />
             </div>
@@ -273,9 +290,9 @@
         <div class="toggle">
             <div class="toggle-panel toggle-right">
                 <h1>Еще не зарегестрированы?</h1>
-                <p>Пора исправлять!</p>
+                <p>Зарегистрируйтесь, чтобы получить доступ ко всем возможностям сервиса и начать работу</p>
                 <a href="/registration">
-                    <button class="hidden" id="register">зарегестрироваться</button></a>
+                    <button class="hidden" id="register">Создать аккаунт</button></a>
             </div>
         </div>
     </div>
@@ -294,6 +311,9 @@
         container.classList.remove("active");
     });
 </script>
+
+<a href="/" class="back-button">Вернуться в каталог</a>
+
 </body>
 
 </html>
