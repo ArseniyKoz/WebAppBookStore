@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -77,13 +78,13 @@ public class AdminController {
         return "redirect:/bookDetails";
     }
 
-    @GetMapping("/books/edit/{id}")
+    @GetMapping("/{id}/edit")
     public String editBook(Model model, @PathVariable("id") int id) {
         model.addAttribute("book", bookService.findOne(id));
         return "edit";
     }
 
-    @PostMapping("/books/edit/{id}")
+    @PostMapping("/{id}/edit")
     public String updateBook(@PathVariable("id") int id,
                              @Valid @ModelAttribute("book") Book book,
                              BindingResult bindingResult) {
@@ -121,5 +122,26 @@ public class AdminController {
         bookService.deactivate(id);
         return "redirect:/bookDetails";
     }
+
+    @GetMapping("/listOfUsers")
+    public String getAllPersons(Authentication authentication, Model model) {
+        List<Person> persons = personService.showAllPersons();
+        Map<Person, List<Order>> personMap = persons.stream()
+                .collect(Collectors.toMap(
+                        person -> person,
+                        person -> Collections.emptyList()
+                ));
+
+        model.addAttribute("personMap", personMap);
+        return "listOfUsers";
+    }
+
+    @PostMapping("/updatePersonRole")
+    public String updatePersonRole(@RequestParam("personId") int personId,
+                                   @RequestParam("role") String role) {
+        personService.updatePersonRole(personId, role);
+        return "redirect:/listOfUsers";
+    }
+
 
 }

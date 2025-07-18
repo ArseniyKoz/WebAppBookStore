@@ -105,21 +105,6 @@
             margin: 20px 0;
             color: #333333;
         }
-        .button-style {
-            background-color: #ffa812;
-            border: none;
-            color: white;
-            border-radius: 32px;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            font-weight: bold;
-            display: inline-block;
-            margin: 10px auto;
-        }
         .button-style:hover {
             background-color: #e09810;
         }
@@ -150,123 +135,158 @@
             color: #666;
         }
 
-        /* Навигационное меню */
-        #nav-container {
-            position: fixed;
-            height: 100vh;
-            width: 100%;
-            pointer-events: none;
-            z-index: 9999;
+    /* Стили для навигационного меню */
+    #nav-container {
+        position: fixed;
+        height: 100vh;
+        width: 100%;
+        pointer-events: none;
+        z-index: 9999;
+    }
+    #nav-container .bg {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        height: calc(100% - 70px);
+        visibility: hidden;
+        opacity: 0;
+        transition: .3s;
+        background: rgba(0,0,0,0.5);
+    }
+    #nav-container:focus-within .bg {
+        visibility: visible;
+        opacity: 1;
+    }
+    #nav-container * {
+        visibility: visible;
+    }
+    .button {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        z-index: 1;
+        -webkit-appearance: none;
+        border: 0;
+        background: transparent;
+        border-radius: 0;
+        height: 70px;
+        width: 30px;
+        cursor: pointer;
+        pointer-events: auto;
+        margin-left: 25px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+    .icon-bar {
+        display: block;
+        width: 100%;
+        height: 3px;
+        background: #333333;
+        transition: .3s;
+    }
+    .icon-bar + .icon-bar {
+        margin-top: 5px;
+    }
+    #nav-container:focus-within .button {
+        pointer-events: none;
+    }
+    #nav-container:focus-within .icon-bar:nth-of-type(1) {
+        transform: translate3d(0,8px,0) rotate(45deg);
+        background: #ffa812;
+    }
+    #nav-container:focus-within .icon-bar:nth-of-type(2) {
+        opacity: 0;
+    }
+    #nav-container:focus-within .icon-bar:nth-of-type(3) {
+        transform: translate3d(0,-8px,0) rotate(-45deg);
+        background: #ffa812;
+    }
+    #nav-content {
+        margin-top: 70px;
+        padding: 20px;
+        width: 90%;
+        max-width: 300px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: calc(100% - 70px);
+        background: #ffffff;
+        pointer-events: auto;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        transform: translateX(-100%);
+        transition: transform .3s;
+        will-change: transform;
+        contain: paint;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+    #nav-content ul {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    #nav-content li a {
+        padding: 10px 5px;
+        display: block;
+        text-transform: uppercase;
+        transition: color .1s;
+        color: #333333;
+        font-weight: 500;
+    }
+    #nav-content li a:hover {
+        color: #ffa812;
+    }
+    #nav-content li span {
+        padding: 10px 5px;
+        display: block;
+        text-transform: uppercase;
+        transition: color .1s;
+        color: #333333;
+        font-weight: bold;
+    }
+    #nav-content li span:hover {
+        color: #ffa812;
+    }
+    #nav-container:focus-within #nav-content {
+        transform: none;
+    }
+    .logout-btn {
+        background-color: transparent;
+        border: 0;
+        padding: 10px 5px;
+        display: block;
+        text-transform: uppercase;
+        transition: color .1s;
+        color: #333333;
+        text-align: left;
+        width: 100%;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: inherit;
+    }
+    .logout-btn:hover {
+        color: #ffa812;
+    }
+                    a,
+        a:visited,
+        a:focus,
+        a:active,
+        a:link {
+            text-decoration: none;
+            outline: 0;
         }
-        #nav-container .bg {
-            position: absolute;
-            top: 70px;
-            left: 0;
-            width: 100%;
-            height: calc(100% - 70px);
-            visibility: hidden;
-            opacity: 0;
-            transition: .3s;
-            background: rgba(0,0,0,0.5);
+        a {
+            color: currentColor;
+            transition: .2s ease-in-out;
         }
-        #nav-container:focus-within .bg {
-            visibility: visible;
-            opacity: 1;
+        span {
+            color: currentColor;
+            transition: .2s ease-in-out;
         }
-        #nav-container * {
-            visibility: visible;
-        }
-        .button {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            z-index: 1;
-            -webkit-appearance: none;
-            border: 0;
-            background: transparent;
-            border-radius: 0;
-            height: 70px;
-            width: 30px;
-            cursor: pointer;
-            pointer-events: auto;
-            margin-left: 25px;
-            touch-action: manipulation;
-        }
-        .icon-bar {
-            display: block;
-            width: 100%;
-            height: 3px;
-            background: #333333;
-            transition: .3s;
-            margin: 4px 0;
-        }
-        #nav-container:focus-within .button {
-            pointer-events: none;
-        }
-        #nav-container:focus-within .icon-bar:nth-of-type(1) {
-            transform: translate3d(0,8px,0) rotate(45deg);
-            background: #ffa812;
-        }
-        #nav-container:focus-within .icon-bar:nth-of-type(2) {
-            opacity: 0;
-        }
-        #nav-container:focus-within .icon-bar:nth-of-type(3) {
-            transform: translate3d(0,-8px,0) rotate(-45deg);
-            background: #ffa812;
-        }
-        #nav-content {
-            margin-top: 70px;
-            padding: 20px;
-            width: 90%;
-            max-width: 300px;
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: calc(100% - 70px);
-            background: #ffffff;
-            pointer-events: auto;
-            transform: translateX(-100%);
-            transition: transform .3s;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-        }
-        #nav-content ul {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        #nav-content li a {
-            padding: 12px 8px;
-            display: block;
-            text-transform: uppercase;
-            transition: color .1s;
-            color: #333333;
-            font-weight: 500;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        #nav-content li a:hover {
-            color: #ffa812;
-            background-color: #f8f8f8;
-        }
-        #nav-container:focus-within #nav-content {
-            transform: none;
-        }
-        .logout-btn {
-            background: none;
-            border: none;
-            width: 100%;
-            text-align: left;
-            padding: 12px 8px;
-            cursor: pointer;
-            text-transform: uppercase;
-            color: #333333;
-            font-weight: 500;
-            border-bottom: 1px solid #e0e0e0;
-            transition: color .1s;
-        }
-        .logout-btn:hover {
-            color: #ffa812;
-            background-color: #f8f8f8;
+        ul {
+            padding: 0;
+            list-style: none;
         }
 
         /* Адаптивность */

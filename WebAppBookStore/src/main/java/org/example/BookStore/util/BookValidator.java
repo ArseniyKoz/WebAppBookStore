@@ -29,8 +29,6 @@ public class BookValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         Book book = (Book) target;
-        if (!checkURL(book.getUrl()))
-            errors.rejectValue("url", "", "Неверный url");
         if (errors.hasFieldErrors("year") && Objects.equals((errors.getFieldError("year")).getCode(), "typeMismatch"))
             errors.rejectValue("year", "", "Неверный формат");
         if (errors.hasFieldErrors("price") && Objects.equals((errors.getFieldError("price")).getCode(), "typeMismatch"))

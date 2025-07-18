@@ -259,5 +259,19 @@
         </div>
     </form>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const urlInput = document.getElementById('url');
+
+        form.addEventListener('submit', function(e) {
+            if (!urlInput.value.trim()) {
+                urlInput.value = 'https://avatars.mds.yandex.net/i?id=5b6c8bbad03cce9c572506c48b6de725_l-8219252-images-thumbs&n=13';
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
